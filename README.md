@@ -1,13 +1,21 @@
 # Tree
 
-![Swift](https://img.shields.io/badge/Swift-orange.svg)
-![Swift Package Manager](https://img.shields.io/badge/swiftpm-compatible-brightgreen.svg?style=flat)
+<p align="center">
+    <img src="https://img.shields.io/badge/Swift-orange.svg" alt="Swift" />
+    <a href="https://swift.org/package-manager">
+        <img src="https://img.shields.io/badge/swiftpm-compatible-brightgreen.svg?style=flat" alt="Swift Package Manager" />
+    </a>
+</p>
 
 Welcome to **Tree**, a Swift package implementing a hierarchical tree structure
 constructed of interconnected nodes.
 
-![An example of a basic tree hierarchy](./Resources/tree~dark.png#gh-dark-mode-only)
-![An example of a basic tree hierarchy](./Resources/tree.png#gh-light-mode-only)
+<p align="center">
+    <picture>
+        <source srcset="./Resources/tree~dark.png" media="(prefers-color-scheme: dark)">
+        <img src="./Resources/tree.png" width="300" max-width="90%" alt="An example of a basic tree hierarchy">
+    </picture>
+</p>
 
 ## Usage
 
