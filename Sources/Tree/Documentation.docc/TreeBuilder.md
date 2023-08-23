@@ -8,7 +8,7 @@ sub nodes.
 func createNode<T: Identifiable>(_ element: T, @TreeBuilder<T> _ contents: () -> [Node<T>]) -> Node<T> {
     let node = Node(element)
     for child in contents() {
-        node.append(child)
+        node.append(child: child)
     }
     return node
 }

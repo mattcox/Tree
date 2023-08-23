@@ -10,35 +10,33 @@ import XCTest
 @testable import Tree
 
 final class NodeTests: XCTestCase {
-/// Tests the append element method, building a basic tree and then testing
-/// the structure is as expected.
+/// Test adding a child element into the tree.
 ///
-	func testAppendElement() {
+	func testAddChildElement() {
 		// Create the root node.
 		//
 		let root = Node(Test("root", numberOfChildren: 3, parent: nil))
 		
 		// Add the children of the root node.
 		//
-		root.append(Test("A", numberOfChildren: 0, parent: "root"))
-		root.append(Test("B", numberOfChildren: 0, parent: "root"))
+		root.append(child: Test("A", numberOfChildren: 0, parent: "root"))
+		root.append(child: Test("B", numberOfChildren: 0, parent: "root"))
 		
-		let C = root.append(Test("C", numberOfChildren: 2, parent: "root"))
+		let C = root.append(child: Test("C", numberOfChildren: 2, parent: "root"))
 		
 		// Add two children of the C node.
 		//
-		C.append(Test("D", numberOfChildren: 0, parent: "C"))
-		C.append(Test("E", numberOfChildren: 0, parent: "C"))
+		C.append(child: Test("D", numberOfChildren: 0, parent: "C"))
+		C.append(child: Test("E", numberOfChildren: 0, parent: "C"))
 		
 		// Validate the structure.
 		//
 		root.validate()
 	}
 	
-/// Tests the append node method, building a basic tree and then testing the
-/// structure is as expected.
+/// Test adding a child node into the tree.
 ///
-	func testAppendNode() {
+	func testAddChildNode() {
 		// Create the root node.
 		//
 		let root = Node(Test("root", numberOfChildren: 3, parent: nil))
@@ -56,16 +54,132 @@ final class NodeTests: XCTestCase {
 		
 		// Build the structure.
 		//
-		root.append(A)
-		root.append(B)
-		root.append(C)
+		root.append(child: A)
+		root.append(child: B)
+		root.append(child: C)
 		
-		C.append(D)
-		C.append(E)
+		C.append(child: D)
+		C.append(child: E)
 		
 		// Validate the structure.
 		//
 		root.validate()
+	}
+	
+/// Test adding a child element into the tree at a specific index.
+///
+	func testAddChildElementAtIndex() {
+		// Create a basic tree structure.
+		//
+		let root = Root(Test("root", numberOfChildren: 3)) {
+			Test("A", numberOfChildren: 0, parent: "root")
+			Test("B", numberOfChildren: 0, parent: "root")
+			Test("C", numberOfChildren: 0, parent: "root")
+		}
+		
+		// Attempt to insert an element before the A node. This should be index
+		// 0.
+		//
+		root.insert(child: Test("BeforeA", numberOfChildren: 0, parent: "root"), atIndex: 0)
+		XCTAssertEqual(root.children.count, 4)
+		XCTAssertEqual(root.children[0].id, "BeforeA")
+		XCTAssertEqual(root.children[1].id, "A")
+		XCTAssertEqual(root.children[2].id, "B")
+		XCTAssertEqual(root.children[3].id, "C")
+		
+		// Attempted to insert an element after the A node. This should now be
+		// index 2.
+		//
+		root.insert(child: Test("AfterA", numberOfChildren: 0, parent: "root"), atIndex: 2)
+		XCTAssertEqual(root.children.count, 5)
+		XCTAssertEqual(root.children[0].id, "BeforeA")
+		XCTAssertEqual(root.children[1].id, "A")
+		XCTAssertEqual(root.children[2].id, "AfterA")
+		XCTAssertEqual(root.children[3].id, "B")
+		XCTAssertEqual(root.children[4].id, "C")
+		
+		// Attempt to insert an element at a negative index. It should be added
+		// to the start of the list of children.
+		//
+		root.insert(child: Test("Start", numberOfChildren: 0, parent: "root"), atIndex: Int.min)
+		XCTAssertEqual(root.children.count, 6)
+		XCTAssertEqual(root.children[0].id, "Start")
+		XCTAssertEqual(root.children[1].id, "BeforeA")
+		XCTAssertEqual(root.children[2].id, "A")
+		XCTAssertEqual(root.children[3].id, "AfterA")
+		XCTAssertEqual(root.children[4].id, "B")
+		XCTAssertEqual(root.children[5].id, "C")
+		
+		// Attempt to insert an element at a out of bounds index. It should be
+		// added to the end of the list of children.
+		//
+		root.insert(child: Test("End", numberOfChildren: 0, parent: "root"), atIndex: Int.max)
+		XCTAssertEqual(root.children.count, 7)
+		XCTAssertEqual(root.children[0].id, "Start")
+		XCTAssertEqual(root.children[1].id, "BeforeA")
+		XCTAssertEqual(root.children[2].id, "A")
+		XCTAssertEqual(root.children[3].id, "AfterA")
+		XCTAssertEqual(root.children[4].id, "B")
+		XCTAssertEqual(root.children[5].id, "C")
+		XCTAssertEqual(root.children[6].id, "End")
+	}
+	
+/// Test inserting a node into the tree at a specific index.
+///
+	func testAddChildNodeAtIndex() {
+		// Create a basic tree structure.
+		//
+		let root = Root(Test("root", numberOfChildren: 3)) {
+			Test("A", numberOfChildren: 0, parent: "root")
+			Test("B", numberOfChildren: 0, parent: "root")
+			Test("C", numberOfChildren: 0, parent: "root")
+		}
+		
+		// Attempt to insert an element before the A node. This should be index
+		// 0.
+		//
+		root.insert(child: Node(Test("BeforeA", numberOfChildren: 0, parent: "root")), atIndex: 0)
+		XCTAssertEqual(root.children.count, 4)
+		XCTAssertEqual(root.children[0].id, "BeforeA")
+		XCTAssertEqual(root.children[1].id, "A")
+		XCTAssertEqual(root.children[2].id, "B")
+		XCTAssertEqual(root.children[3].id, "C")
+		
+		// Attempted to insert an element after the A node. This should now be
+		// index 2.
+		//
+		root.insert(child: Node(Test("AfterA", numberOfChildren: 0, parent: "root")), atIndex: 2)
+		XCTAssertEqual(root.children.count, 5)
+		XCTAssertEqual(root.children[0].id, "BeforeA")
+		XCTAssertEqual(root.children[1].id, "A")
+		XCTAssertEqual(root.children[2].id, "AfterA")
+		XCTAssertEqual(root.children[3].id, "B")
+		XCTAssertEqual(root.children[4].id, "C")
+		
+		// Attempt to insert an element at a negative index. It should be added
+		// to the start of the list of children.
+		//
+		root.insert(child: Node(Test("Start", numberOfChildren: 0, parent: "root")), atIndex: Int.min)
+		XCTAssertEqual(root.children.count, 6)
+		XCTAssertEqual(root.children[0].id, "Start")
+		XCTAssertEqual(root.children[1].id, "BeforeA")
+		XCTAssertEqual(root.children[2].id, "A")
+		XCTAssertEqual(root.children[3].id, "AfterA")
+		XCTAssertEqual(root.children[4].id, "B")
+		XCTAssertEqual(root.children[5].id, "C")
+		
+		// Attempt to insert an element at a out of bounds index. It should be
+		// added to the end of the list of children.
+		//
+		root.insert(child: Node(Test("End", numberOfChildren: 0, parent: "root")), atIndex: Int.max)
+		XCTAssertEqual(root.children.count, 7)
+		XCTAssertEqual(root.children[0].id, "Start")
+		XCTAssertEqual(root.children[1].id, "BeforeA")
+		XCTAssertEqual(root.children[2].id, "A")
+		XCTAssertEqual(root.children[3].id, "AfterA")
+		XCTAssertEqual(root.children[4].id, "B")
+		XCTAssertEqual(root.children[5].id, "C")
+		XCTAssertEqual(root.children[6].id, "End")
 	}
 	
 /// Tests the children getter for the node.
@@ -150,122 +264,6 @@ final class NodeTests: XCTestCase {
 		
 		XCTAssertNotNil(H)
 		XCTAssertFalse((H?.contains(element: Test("A", numberOfChildren: 0, parent: "root"))) ?? true)
-	}
-	
-/// Test inserting an element into the tree at a specific index.
-///
-	func testInsertElement() {
-		// Create a basic tree structure.
-		//
-		let root = Root(Test("root", numberOfChildren: 3)) {
-			Test("A", numberOfChildren: 0, parent: "root")
-			Test("B", numberOfChildren: 0, parent: "root")
-			Test("C", numberOfChildren: 0, parent: "root")
-		}
-		
-		// Attempt to insert an element before the A node. This should be index
-		// 0.
-		//
-		root.insert(Test("BeforeA", numberOfChildren: 0, parent: "root"), atIndex: 0)
-		XCTAssertEqual(root.children.count, 4)
-		XCTAssertEqual(root.children[0].id, "BeforeA")
-		XCTAssertEqual(root.children[1].id, "A")
-		XCTAssertEqual(root.children[2].id, "B")
-		XCTAssertEqual(root.children[3].id, "C")
-		
-		// Attempted to insert an element after the A node. This should now be
-		// index 2.
-		//
-		root.insert(Test("AfterA", numberOfChildren: 0, parent: "root"), atIndex: 2)
-		XCTAssertEqual(root.children.count, 5)
-		XCTAssertEqual(root.children[0].id, "BeforeA")
-		XCTAssertEqual(root.children[1].id, "A")
-		XCTAssertEqual(root.children[2].id, "AfterA")
-		XCTAssertEqual(root.children[3].id, "B")
-		XCTAssertEqual(root.children[4].id, "C")
-		
-		// Attempt to insert an element at a negative index. It should be added
-		// to the start of the list of children.
-		//
-		root.insert(Test("Start", numberOfChildren: 0, parent: "root"), atIndex: Int.min)
-		XCTAssertEqual(root.children.count, 6)
-		XCTAssertEqual(root.children[0].id, "Start")
-		XCTAssertEqual(root.children[1].id, "BeforeA")
-		XCTAssertEqual(root.children[2].id, "A")
-		XCTAssertEqual(root.children[3].id, "AfterA")
-		XCTAssertEqual(root.children[4].id, "B")
-		XCTAssertEqual(root.children[5].id, "C")
-		
-		// Attempt to insert an element at a out of bounds index. It should be
-		// added to the end of the list of children.
-		//
-		root.insert(Test("End", numberOfChildren: 0, parent: "root"), atIndex: Int.max)
-		XCTAssertEqual(root.children.count, 7)
-		XCTAssertEqual(root.children[0].id, "Start")
-		XCTAssertEqual(root.children[1].id, "BeforeA")
-		XCTAssertEqual(root.children[2].id, "A")
-		XCTAssertEqual(root.children[3].id, "AfterA")
-		XCTAssertEqual(root.children[4].id, "B")
-		XCTAssertEqual(root.children[5].id, "C")
-		XCTAssertEqual(root.children[6].id, "End")
-	}
-	
-/// Test inserting an element into the tree at a specific index.
-///
-	func testInsertNode() {
-		// Create a basic tree structure.
-		//
-		let root = Root(Test("root", numberOfChildren: 3)) {
-			Test("A", numberOfChildren: 0, parent: "root")
-			Test("B", numberOfChildren: 0, parent: "root")
-			Test("C", numberOfChildren: 0, parent: "root")
-		}
-		
-		// Attempt to insert an element before the A node. This should be index
-		// 0.
-		//
-		root.insert(Node(Test("BeforeA", numberOfChildren: 0, parent: "root")), atIndex: 0)
-		XCTAssertEqual(root.children.count, 4)
-		XCTAssertEqual(root.children[0].id, "BeforeA")
-		XCTAssertEqual(root.children[1].id, "A")
-		XCTAssertEqual(root.children[2].id, "B")
-		XCTAssertEqual(root.children[3].id, "C")
-		
-		// Attempted to insert an element after the A node. This should now be
-		// index 2.
-		//
-		root.insert(Node(Test("AfterA", numberOfChildren: 0, parent: "root")), atIndex: 2)
-		XCTAssertEqual(root.children.count, 5)
-		XCTAssertEqual(root.children[0].id, "BeforeA")
-		XCTAssertEqual(root.children[1].id, "A")
-		XCTAssertEqual(root.children[2].id, "AfterA")
-		XCTAssertEqual(root.children[3].id, "B")
-		XCTAssertEqual(root.children[4].id, "C")
-		
-		// Attempt to insert an element at a negative index. It should be added
-		// to the start of the list of children.
-		//
-		root.insert(Node(Test("Start", numberOfChildren: 0, parent: "root")), atIndex: Int.min)
-		XCTAssertEqual(root.children.count, 6)
-		XCTAssertEqual(root.children[0].id, "Start")
-		XCTAssertEqual(root.children[1].id, "BeforeA")
-		XCTAssertEqual(root.children[2].id, "A")
-		XCTAssertEqual(root.children[3].id, "AfterA")
-		XCTAssertEqual(root.children[4].id, "B")
-		XCTAssertEqual(root.children[5].id, "C")
-		
-		// Attempt to insert an element at a out of bounds index. It should be
-		// added to the end of the list of children.
-		//
-		root.insert(Node(Test("End", numberOfChildren: 0, parent: "root")), atIndex: Int.max)
-		XCTAssertEqual(root.children.count, 7)
-		XCTAssertEqual(root.children[0].id, "Start")
-		XCTAssertEqual(root.children[1].id, "BeforeA")
-		XCTAssertEqual(root.children[2].id, "A")
-		XCTAssertEqual(root.children[3].id, "AfterA")
-		XCTAssertEqual(root.children[4].id, "B")
-		XCTAssertEqual(root.children[5].id, "C")
-		XCTAssertEqual(root.children[6].id, "End")
 	}
 	
 /// Test the isLeaf getter on the node.
@@ -508,9 +506,9 @@ final class NodeTests: XCTestCase {
 		let B = Node(Test("B", numberOfChildren: 1, parent: "A"))
 		let C = Node(Test("C", numberOfChildren: 1, parent: "B"))
 		
-		root.append(A)
-		A.append(B)
-		B.append(C)
+		root.append(child: A)
+		A.append(child: B)
+		B.append(child: C)
 		
 		// Test the parents.
 		//
@@ -533,11 +531,11 @@ final class NodeTests: XCTestCase {
 		let C = Node(Test("C", numberOfChildren: 0, parent: "A"))
 		let D = Node(Test("D", numberOfChildren: 0, parent: "A"))
 		
-		root.append(A)
-		root.append(B)
+		root.append(child: A)
+		root.append(child: B)
 		
-		A.append(C)
-		A.append(D)
+		A.append(child: C)
+		A.append(child: D)
 		
 		// Prune the A node.
 		//
@@ -631,11 +629,11 @@ final class NodeTests: XCTestCase {
 		let C = Node(Test("C", numberOfChildren: 0, parent: "A"))
 		let D = Node(Test("D", numberOfChildren: 0, parent: "A"))
 		
-		root.append(A)
-		root.append(B)
+		root.append(child: A)
+		root.append(child: B)
 		
-		A.append(C)
-		A.append(D)
+		A.append(child: C)
+		A.append(child: D)
 		
 		// Remove the A node. This should make an independent tree for A, and
 		// reparent A children to A's old parent, at the same position as A.
@@ -674,11 +672,11 @@ final class NodeTests: XCTestCase {
 		let C = Node(Test("C", numberOfChildren: 0, parent: "A"))
 		let D = Node(Test("D", numberOfChildren: 0, parent: "A"))
 		
-		root.append(A)
-		root.append(B)
+		root.append(child: A)
+		root.append(child: B)
 		
-		A.append(C)
-		A.append(D)
+		A.append(child: C)
+		A.append(child: D)
 		
 		// Remove the A node, specifying it by identifier. This should make an
 		// independent tree for A, and reparent A children to A's old parent,
@@ -718,11 +716,11 @@ final class NodeTests: XCTestCase {
 		let C = Node(Test("C", numberOfChildren: 0, parent: "A"))
 		let D = Node(Test("D", numberOfChildren: 0, parent: "A"))
 		
-		root.append(A)
-		root.append(B)
+		root.append(child: A)
+		root.append(child: B)
 		
-		A.append(C)
-		A.append(D)
+		A.append(child: C)
+		A.append(child: D)
 		
 		// Remove the A node, specifying it by index. This should make an
 		// independent tree for A, and reparent A children to A's old parent,
@@ -766,14 +764,14 @@ final class NodeTests: XCTestCase {
 		
 		let F = Node(Test("F", numberOfChildren: 0, parent: "E"))
 		
-		root.append(A)
-		root.append(B)
-		root.append(C)
+		root.append(child: A)
+		root.append(child: B)
+		root.append(child: C)
 		
-		A.append(D)
-		A.append(E)
+		A.append(child: D)
+		A.append(child: E)
 		
-		E.append(F)
+		E.append(child: F)
 		
 		// Given the F node, attempt to find the root of the tree.
 		//

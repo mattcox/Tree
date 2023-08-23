@@ -272,7 +272,7 @@ extension Node {
 /// - Returns: The node created to store the element.
 ///
 	@discardableResult
-	public func append(_ element: Element) -> Node<Element> {
+	public func append(child element: Element) -> Node<Element> {
 		let node = Node<Element>(element)
 		Node.addChild(node: node, to: self)
 		return node
@@ -287,7 +287,7 @@ extension Node {
 /// - Parameters:
 ///   - node: The node to add as a child of this node.
 ///
-	public func append(_ node: Node<Element>) {
+	public func append(child node: Node<Element>) {
 		Node.addChild(node: node, to: self)
 	}
 
@@ -302,7 +302,7 @@ extension Node {
 /// - Returns: The node created to store the element.
 ///
 	@discardableResult
-	public func insert(_ element: Element, atIndex index: Int) -> Node<Element> {
+	public func insert(child element: Element, atIndex index: Int) -> Node<Element> {
 		let node = Node<Element>(element)
 		Node.addChild(node: node, to: self, atIndex: index)
 		return node
@@ -318,7 +318,7 @@ extension Node {
 ///   - node: The node to parent to this node.
 ///   - index: The index of the element.
 ///
-	public func insert(_ node: Node<Element>, atIndex index: Int) {
+	public func insert(child node: Node<Element>, atIndex index: Int) {
 		Node.addChild(node: node, to: self, atIndex: index)
 	}
 

@@ -31,12 +31,12 @@ implied.
 let root = Node("Root")
 
 // Create two nodes as children of the root node.
-let A = root.append("A")
-let B = root.append("B")
+let A = root.append(child: "A")
+let B = root.append(child: "B")
 
 // Create some leaf nodes as children of node A.
-let C = A.append("C")
-let D = A.append("D")
+let C = A.append(child: "C")
+let D = A.append(child: "D")
 ```
 
 ![The tree structure created by the example above](nodeExample.png)

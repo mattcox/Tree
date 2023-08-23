@@ -30,7 +30,7 @@ extension Node {
 	public convenience init(_ element: Element, @TreeBuilder<Element> _ contents: () -> [Node<Element>]) {
 		self.init(element)
 		for child in contents() {
-			self.append(child)
+			self.append(child: child)
 		}
 	}
 }

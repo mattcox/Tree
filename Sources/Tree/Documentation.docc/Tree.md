@@ -28,10 +28,10 @@ and leaves at the bottom.
 - ``Root``
 
 ### Editing
-- ``Node/append(_:)-8uhg8``
-- ``Node/append(_:)-73w01``
-- ``Node/insert(_:atIndex:)-9lz2l``
-- ``Node/insert(_:atIndex:)-64fll``
+- ``Node/append(child:)-3dbmb``
+- ``Node/append(child:)-5lg6n``
+- ``Node/insert(child:atIndex:)-4pov2``
+- ``Node/insert(child:atIndex:)-5en4l``
 - ``Node/prune()``
 - ``Node/prune(childAtIndex:)``
 - ``Node/prune(childIdentifiedBy:)``
