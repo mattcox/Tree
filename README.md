@@ -71,6 +71,10 @@ if let A = root.node(identifiedBy: "A") {
 }
 ```
 
+## Documentation
+
+For more information on usage, the Tree documentation can be found at: https://mattcox.github.io/Tree/.
+
 ## Installation
 
 Tree is distributed using the [Swift Package Manager](https://swift.org/package-manager). To install it within another Swift package, add it as a dependency within your `Package.swift` manifest:
