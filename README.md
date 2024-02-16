@@ -33,7 +33,7 @@ let root = Node("root")
 // Create two nodes as children of the root node.
 //
 let A = root.append(child: "A")
-let B = root.append(child" "B")
+let B = root.append(child: "B")
 
 // Create some leaf nodes as children of node A.
 //
