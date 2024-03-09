@@ -19,7 +19,7 @@ public struct XMLTree<Element:Identifiable> {
     ///   - root: root node of the tree
     ///   - property: string property of generic Element used as the tag name
     ///   - attributes: dictionary of string property pairs, where the string is the attribute name and the property is used for attribute value.
-    init(root:Node<Element>,
+    public init(root:Node<Element>,
          using property:KeyPath<Element, String>,
          assigning attributes:[String: KeyPath<Element, String>] = [:])
     {
