@@ -38,11 +38,14 @@ public struct XMLTree<Element:Identifiable> {
     private func toXML(node:Node<Element>) -> XMLElement {
         let branchElement = XMLElement(name: node.element[keyPath: property])
         for (attributeName, attributeValue) in attributes {
-            let attributeNode:XMLNode = XMLNode.attribute(
-                withName: attributeName,
-                stringValue: node.element[keyPath: attributeValue]
-            ) as! XMLNode
-            branchElement.addAttribute(attributeNode)
+            let value:String? = node.element[keyPath: attributeValue]
+            if(value != nil) {
+                let attributeNode:XMLNode = XMLNode.attribute(
+                    withName: attributeName,
+                    stringValue: node.element[keyPath: attributeValue]
+                ) as! XMLNode
+                branchElement.addAttribute(attributeNode)
+            }
         }
         
         for childNode in node.children {
