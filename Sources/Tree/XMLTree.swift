@@ -12,7 +12,7 @@ public struct XMLTree<Element:Identifiable> {
     private(set) var data:Data?
     
     let property:KeyPath<Element, String>
-    let attributes:[String: KeyPath<Element, String>]
+    let attributes:[String: KeyPath<Element, String?>]
     
     /// XMLTree converts the tree into an XML file.
     /// - Parameters:
@@ -21,7 +21,7 @@ public struct XMLTree<Element:Identifiable> {
     ///   - attributes: dictionary of string property pairs, where the string is the attribute name and the property is used for attribute value.
     public init(root:Node<Element>,
          using property:KeyPath<Element, String>,
-         assigning attributes:[String: KeyPath<Element, String>] = [:])
+         assigning attributes:[String: KeyPath<Element, String?>] = [:])
     {
         self.property = property
         self.attributes = attributes
@@ -38,14 +38,14 @@ public struct XMLTree<Element:Identifiable> {
     private func toXML(node:Node<Element>) -> XMLElement {
         let branchElement = XMLElement(name: node.element[keyPath: property])
         for (attributeName, attributeValue) in attributes {
-            let value:String? = node.element[keyPath: attributeValue]
-            if(value != nil) {
-                let attributeNode:XMLNode = XMLNode.attribute(
-                    withName: attributeName,
-                    stringValue: node.element[keyPath: attributeValue]
-                ) as! XMLNode
-                branchElement.addAttribute(attributeNode)
-            }
+        
+            if let value:String = node.element[keyPath: attributeValue] {
+                    let attributeNode:XMLNode = XMLNode.attribute(
+                        withName: attributeName,
+                        stringValue: value
+                    ) as! XMLNode
+                    branchElement.addAttribute(attributeNode)
+                }
         }
         
         for childNode in node.children {
