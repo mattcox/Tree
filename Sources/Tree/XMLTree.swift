@@ -27,8 +27,9 @@ public struct XMLTree<Element:Identifiable> {
         self.attributes = attributes
         
         let document = XMLDocument()
+        
         document.addChild(toXML(node: root))
-        self.data = document.xmlData
+        self.data = document.xmlData(options: [.nodeCompactEmptyElement, .nodePrettyPrint, .documentTidyXML])
     }
     
     
@@ -36,7 +37,9 @@ public struct XMLTree<Element:Identifiable> {
     /// - Parameter node: parent node element
     /// - Returns: XMLElement of the parent element with all children XMLElements appended.
     private func toXML(node:Node<Element>) -> XMLElement {
+        
         let branchElement = XMLElement(name: node.element[keyPath: property])
+        
         for (attributeName, attributeValue) in attributes {
         
             if let value:String = node.element[keyPath: attributeValue] {

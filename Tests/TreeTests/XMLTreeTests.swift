@@ -14,7 +14,9 @@ final class XMLTreeTests: XCTestCase {
     func testNilAttribute() {
         let root = Node(TestElement(name: "root"))
         root.append(child: Node(TestElement(name: "child")))
-        root.append(child: Node(TestElement(name: "child", nickName: "son")))
+        let son = Node(TestElement(name: "child", nickName: "son"))
+        root.append(child: son)
+        son.append(child: Node(TestElement(name: "grandchil", nickName: "grandson")))
 
         let xmltree = XMLTree(root: root, using: \TestElement.id, assigning: ["nickname": \TestElement.nickName])
         xmltree.save()
