@@ -20,7 +20,7 @@ public final class Node<Element: Identifiable>: Identifiable {
 ///
 /// This value can be any type that conforms to `Identifiable`.
 ///
-	public let element: Element
+	public var element: Element
 
 /// The parent node for this node.
 ///

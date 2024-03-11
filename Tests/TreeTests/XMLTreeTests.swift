@@ -18,6 +18,10 @@ final class XMLTreeTests: XCTestCase {
         root.append(child: son)
         son.append(child: Node(TestElement(name: "grandchil", nickName: "grandson")))
 
+        for node in root.depthFirst {
+            node.element.nickName = "testing"
+        }
+        
         let xmltree = XMLTree(root: root, using: \TestElement.id, assigning: ["nickname": \TestElement.nickName])
         xmltree.save()
 
